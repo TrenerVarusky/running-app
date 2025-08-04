@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import hello
+from app.routes import hello, env_check, users
 
 app = FastAPI()
 
@@ -13,3 +13,5 @@ app.add_middleware(
 )
 
 app.include_router(hello.router)
+app.include_router(env_check.router)
+app.include_router(users.router)
