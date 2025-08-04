@@ -1,13 +1,15 @@
-# frontend (React)
-node_modules/
-dist/
-.env.local
+# Frontend
+frontend/node_modules/
 
-# backend (Python/FastAPI)
-__pycache__/
+# Backend Python
+backend/venv/
+backend/__pycache__/
 *.pyc
+
+# Env
+backend/.env
 .env
 
-# general
+# IDE/system
 .vscode/
 .DS_Store
