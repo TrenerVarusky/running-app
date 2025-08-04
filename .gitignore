@@ -1,0 +1,13 @@
+# frontend (React)
+node_modules/
+dist/
+.env.local
+
+# backend (Python/FastAPI)
+__pycache__/
+*.pyc
+.env
+
+# general
+.vscode/
+.DS_Store
