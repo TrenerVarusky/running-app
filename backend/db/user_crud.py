@@ -1,13 +1,18 @@
 # db/user_crud.py
-from db.connection import get_connection
+from sqlalchemy.orm import Session
+from app.models.user import User
+from app.schemas.user_schema import UserCreate
+from app.utils.hash import hash_password
 
-def get_all_users():
-    try:
-        with get_connection() as conn:
-            cursor = conn.cursor()
-            cursor.execute("SELECT id, name, email FROM users")
-            rows = cursor.fetchall()
-            return [{"id": row.id, "name": row.name, "email": row.email} for row in rows]
-    except Exception as e:
-        print("❌ Błąd pobierania użytkowników:", e)
-        return []
+
+def create_user(db: Session, user: UserCreate):
+    db_user = User(
+        email=user.email,
+        hashed_password=hash_password(user.password),
+        name=user.name,
+        role=user.role
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
