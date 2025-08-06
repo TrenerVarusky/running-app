@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react'
 
 const Navbar = () => {
 	const [menuOpen, setMenuOpen] = useState(false)
-    const [shouldRender, setShouldRender] = useState(false)
-    const location = useLocation()
+	const [shouldRender, setShouldRender] = useState(false)
+	const location = useLocation()
 
 	useEffect(() => {
 		if (menuOpen) {
@@ -18,19 +18,36 @@ const Navbar = () => {
 
 	return (
 		<nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 shadow-md bg-gray-900 text-white">
-			<h1 className="text-2xl font-bold tracking-wide">RunPower</h1>
+			<h1 className="text-2xl font-bold tracking-wide">
+				<Link to="/" onClick={() => setMenuOpen(false)} className="block ">
+					RunPower
+				</Link>
+			</h1>
 
 			<ul className="hidden md:flex space-x-6 font-medium">
-				<li className="hover:text-blue-400 cursor-pointer transition">Strona główna</li>
+				<li className="hover:text-blue-400">
+					<Link to="/" onClick={() => setMenuOpen(false)} className="block ">
+						Strona główna
+					</Link>
+				</li>
 				<li>
 					<Link to="/users" className="hover:text-blue-400 transition">
 						O nas
 					</Link>
 				</li>
+				<li>
+					<Link to="/userDetails" onClick={() => setMenuOpen(false)} className="block hover:text-blue-400">
+						Szczegóły użytkownika
+					</Link>
+				</li>
 				<li className="hover:text-blue-400 cursor-pointer transition">Kontakt</li>
-                {location.pathname !== '/login' && (
-						<li><Link to="/login" className="hover:text-blue-400 transition">Zaloguj się</Link></li>
-					)}
+				{location.pathname !== '/login' && (
+					<li>
+						<Link to="/login" className="hover:text-blue-400 transition">
+							Zaloguj się
+						</Link>
+					</li>
+				)}
 			</ul>
 
 			{/* Hamburger menu */}
@@ -58,11 +75,28 @@ const Navbar = () => {
 						menuOpen ? 'animate-slideDownFade' : 'animate-slideUpFade'
 					}`}>
 					<ul className="space-y-2">
-						<li className="hover:text-blue-400">Strona główna</li>
-						<li className="hover:text-blue-400">O nas</li>
+						<li className="hover:text-blue-400">
+							<Link to="/" onClick={() => setMenuOpen(false)} className="block ">
+								Strona główna
+							</Link>
+						</li>
+						<li>
+							<Link to="/users" onClick={() => setMenuOpen(false)} className="block hover:text-blue-400">
+								O nas
+							</Link>
+						</li>
 						<li className="hover:text-blue-400">Kontakt</li>
-                        {location.pathname !== '/login' && (
-							<li><Link to="/login" onClick={() => setMenuOpen(false)} className="block hover:text-blue-400">Zaloguj się</Link></li>
+						<li>
+							<Link to="/userDetails" onClick={() => setMenuOpen(false)} className="block hover:text-blue-400">
+								Szczegóły użytkownika
+							</Link>
+						</li>
+						{location.pathname !== '/login' && (
+							<li>
+								<Link to="/login" onClick={() => setMenuOpen(false)} className="block hover:text-blue-400">
+									Zaloguj się
+								</Link>
+							</li>
 						)}
 					</ul>
 				</div>

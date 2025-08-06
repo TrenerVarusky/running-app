@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import biegaczImg from '../assets/biegacz.png'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import ArticlesSection from '../components/LandingPageComponents/ArticlesSection'
 
 export default function LandingPage() {
 	const [showContent, setShowContent] = useState(false)
@@ -65,6 +66,7 @@ export default function LandingPage() {
 					}`}
 				/>
 			</div>
+			<ArticlesSection />
 			<Footer />
 		</div>
 	)
