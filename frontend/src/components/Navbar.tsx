@@ -1,10 +1,13 @@
 // src/components/Navbar.tsx
 import { Link, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { FiUser } from 'react-icons/fi'
+import { useAuth } from '../hooks/useAuth'
 
 const Navbar = () => {
 	const [menuOpen, setMenuOpen] = useState(false)
 	const [shouldRender, setShouldRender] = useState(false)
+	const { user, loggedIn } = useAuth()
 	const location = useLocation()
 
 	useEffect(() => {
@@ -32,16 +35,19 @@ const Navbar = () => {
 				</li>
 				<li>
 					<Link to="/users" className="hover:text-blue-400 transition">
-						O nas
-					</Link>
-				</li>
-				<li>
-					<Link to="/userDetails" onClick={() => setMenuOpen(false)} className="block hover:text-blue-400">
-						Szczegóły użytkownika
+						Użytkownicy
 					</Link>
 				</li>
 				<li className="hover:text-blue-400 cursor-pointer transition">Kontakt</li>
-				{location.pathname !== '/login' && (
+				{loggedIn && (
+					<li>
+						<Link to="/userDetails" className="flex items-center gap-2 hover:text-blue-400">
+							<FiUser className="text-xl" />
+							<span>{user?.name}</span>
+						</Link>
+					</li>
+				)}
+				{location.pathname !== '/login' && !loggedIn && (
 					<li>
 						<Link to="/login" className="hover:text-blue-400 transition">
 							Zaloguj się
@@ -86,12 +92,15 @@ const Navbar = () => {
 							</Link>
 						</li>
 						<li className="hover:text-blue-400">Kontakt</li>
-						<li>
-							<Link to="/userDetails" onClick={() => setMenuOpen(false)} className="block hover:text-blue-400">
-								Szczegóły użytkownika
-							</Link>
-						</li>
-						{location.pathname !== '/login' && (
+						{loggedIn && (
+							<li>
+								<Link to="/userDetails" className="flex items-center gap-2 hover:text-blue-400">
+									<FiUser className="text-xl" />
+									<span>{user?.name}</span>
+								</Link>
+							</li>
+						)}
+						{location.pathname !== '/login' && !loggedIn &&  (
 							<li>
 								<Link to="/login" onClick={() => setMenuOpen(false)} className="block hover:text-blue-400">
 									Zaloguj się
