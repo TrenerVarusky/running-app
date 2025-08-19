@@ -17,11 +17,12 @@ type Errors = Partial<Record<keyof FormState, string>>
 
 const toGenderOrNull = (g: '' | Gender): Gender | null => (g === '' ? null : g)
 const MAX_BIRTH = '2025-01-01'
-const nameRe = /^[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż]{3,}$/;
+const nameRe = /^[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż]{3,}$/
 
 export default function ProfilePage() {
 	const { data, isLoading } = useProfile()
 	const save = useUpdateProfile()
+	const [showContent, setShowContent] = useState(false)
 
 	const [form, setForm] = useState<FormState>({
 		first_name: '',
@@ -32,6 +33,11 @@ export default function ProfilePage() {
 		gender: '',
 	})
 	const [errors, setErrors] = useState<Errors>({})
+
+	useEffect(() => {
+		const t = setTimeout(() => setShowContent(true), 150)
+		return () => clearTimeout(t)
+	}, [])
 
 	useEffect(() => {
 		if (!data) return
@@ -89,10 +95,10 @@ export default function ProfilePage() {
 		save.mutate({
 			first_name: form.first_name.trim(),
 			last_name: form.last_name.trim(),
-			birth_date: form.birth_date, // YYYY-MM-DD
+			birth_date: form.birth_date,
 			height_cm: toNum(form.height_cm),
 			weight_kg: toNum(form.weight_kg),
-			gender: toGenderOrNull(form.gender), // "male" / "female"
+			gender: toGenderOrNull(form.gender),
 		})
 	}
 
@@ -103,8 +109,15 @@ export default function ProfilePage() {
 			<main className="flex-grow py-36 px-4">
 				<div className="max-w-5xl mx-auto grid gap-8">
 					{/* Karta z profilem (API) */}
-					<div className="bg-gray-800 p-8 rounded-xl shadow-lg">
-						<h2 className="text-2xl font-bold mb-6">Szczegóły profilu</h2>
+					<div
+						className={`bg-gray-800 p-8 rounded-xl shadow-lg transform transition-all duration-700 ease-out will-change-[transform,opacity] 
+        ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+						<h2
+							className={`text-2xl font-bold mb-6 transition-all duration-700 ease-out 
+          ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
+							style={{ transitionDelay: '80ms' }}>
+							Szczegóły profilu
+						</h2>
 
 						{isLoading ? (
 							<p className="text-white/80">Ładowanie…</p>
