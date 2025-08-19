@@ -9,6 +9,7 @@ from fastapi.responses import JSONResponse
 from app.schemas.auth import LoginUser
 from app.utils.auth import verify_password
 from fastapi.responses import JSONResponse
+from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter(
     prefix="/auth",
@@ -22,7 +23,6 @@ def get_db():
         yield db
     finally:
         db.close()
-
 
 @router.post("/register", response_model=UserOut)
 def register(user_data: UserCreate, db: Session = Depends(get_db)):
