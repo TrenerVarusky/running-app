@@ -11,7 +11,6 @@ class ProfileIn(BaseModel):
     height_cm: Optional[float] = Field(None, gt=0)  # <-- float
     weight_kg: Optional[float] = Field(None, gt=0)  # <-- float
     gender: Optional[Literal["male", "female"]] = None
-    preferred_units: Optional[Literal["metric", "imperial"]] = None
 
 class ProfileOut(ProfileIn):
     model_config = ConfigDict(from_attributes=True)  # pydantic v2 odpowiednik orm_mode

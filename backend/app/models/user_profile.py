@@ -17,7 +17,6 @@ class UserProfile(Base):
     weight_kg  = Column(DECIMAL(5, 2), nullable=True)
 
     gender = Column(String(10), nullable=True)              # 'male' | 'female' | 'other'
-    preferred_units = Column(String(10), nullable=True, default="metric")  # 'metric' | 'imperial'
 
     # odwrotna strona relacji (w User: profile = relationship(...))
     user = relationship("User", back_populates="profile")

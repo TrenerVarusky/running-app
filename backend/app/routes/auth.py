@@ -24,16 +24,6 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/token")
-def login_token(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    # Swagger prześle "username" — potraktuj to jako email
-    user = db.query(User).filter(User.email == form_data.username).first()
-    if not user or not verify_password(form_data.password, user.hashed_password):
-        raise HTTPException(status_code=401, detail="Nieprawidłowy e-mail lub hasło.")
-
-    access_token = create_access_token(data={"email": user.email, "name": user.name, "role": user.role})
-    return {"access_token": access_token, "token_type": "bearer"}
-
 @router.post("/register", response_model=UserOut)
 def register(user_data: UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter(User.email == user_data.email).first()
