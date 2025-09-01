@@ -2,7 +2,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from db.connection import Base
-
+from .user_training_profile import UserTrainingProfile
 class User(Base):
     __tablename__ = "users"
 
@@ -14,3 +14,4 @@ class User(Base):
 
     # relacja jeden-do-jeden z profilem
     profile = relationship("UserProfile", uselist=False, back_populates="user")
+    training_profile = relationship(UserTrainingProfile, uselist=False, back_populates="user")

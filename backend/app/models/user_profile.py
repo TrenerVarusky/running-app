@@ -13,9 +13,6 @@ class UserProfile(Base):
     last_name  = Column(String(80), nullable=True)
     birth_date = Column(Date, nullable=True)
 
-    height_cm  = Column(DECIMAL(5, 2))
-    weight_kg  = Column(DECIMAL(5, 2), nullable=True)
-
     gender = Column(String(10), nullable=True)              # 'male' | 'female' | 'other'
 
     # odwrotna strona relacji (w User: profile = relationship(...))

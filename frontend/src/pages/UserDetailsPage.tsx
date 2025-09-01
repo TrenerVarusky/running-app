@@ -3,13 +3,12 @@ import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { useProfile, useUpdateProfile } from '../hooks/useProfile'
 import { genderOptions, type Gender } from '../constants/profile'
+import TrainingProfileCard from '../components/TrainingProfile/TrainingProfileCard'
 
 type FormState = {
 	first_name: string
 	last_name: string
 	birth_date: string
-	height_cm: string
-	weight_kg: string
 	gender: '' | Gender
 }
 
@@ -28,8 +27,6 @@ export default function ProfilePage() {
 		first_name: '',
 		last_name: '',
 		birth_date: '',
-		height_cm: '',
-		weight_kg: '',
 		gender: '',
 	})
 	const [errors, setErrors] = useState<Errors>({})
@@ -46,15 +43,12 @@ export default function ProfilePage() {
 			first_name: data.first_name ?? '',
 			last_name: data.last_name ?? '',
 			birth_date: data.birth_date ?? '',
-			height_cm: data.height_cm?.toString() ?? '',
-			weight_kg: data.weight_kg?.toString() ?? '',
 			gender: (data.gender as Gender) ?? '',
 		}))
 	}, [data])
 
 	const validate = (s: FormState): Errors => {
 		const e: Errors = {}
-		const num = (v: string) => Number(v.replace(',', '.'))
 
 		if (!s.first_name.trim()) e.first_name = 'Imię jest wymagane.'
 		else if (!nameRe.test(s.first_name.trim())) {
@@ -69,11 +63,6 @@ export default function ProfilePage() {
 			e.birth_date = 'Data nie może być późniejsza niż 01.01.2025.'
 		}
 		if (!s.gender) e.gender = 'Wybierz płeć.'
-
-		if (!s.weight_kg.trim()) e.weight_kg = 'Waga jest wymagana.'
-		else if (!(num(s.weight_kg) > 0)) e.weight_kg = 'Waga musi być większa niż 0.'
-		if (!s.height_cm.trim()) e.height_cm = 'Wzrost jest wymagany.'
-		else if (!(num(s.height_cm) > 0)) e.height_cm = 'Wzrost musi być większy niż 0.'
 
 		return e
 	}
@@ -91,13 +80,10 @@ export default function ProfilePage() {
 		setErrors(errs)
 		if (Object.keys(errs).length) return
 
-		const toNum = (v: string) => Number(v.replace(',', '.'))
 		save.mutate({
 			first_name: form.first_name.trim(),
 			last_name: form.last_name.trim(),
 			birth_date: form.birth_date,
-			height_cm: toNum(form.height_cm),
-			weight_kg: toNum(form.weight_kg),
 			gender: toGenderOrNull(form.gender),
 		})
 	}
@@ -106,7 +92,7 @@ export default function ProfilePage() {
 		<div className="flex flex-col min-h-screen bg-gray-900 text-white">
 			<Navbar />
 
-			<main className="flex-grow py-36 px-4">
+			<main className="flex-grow pt-24 px-4">
 				<div className="max-w-5xl mx-auto grid gap-8">
 					{/* Karta z profilem (API) */}
 					<div
@@ -203,49 +189,6 @@ export default function ProfilePage() {
 									</div>
 								</div>
 
-								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-									<div>
-										<label htmlFor="weight_kg" className="block mb-1">
-											Waga (kg)
-										</label>
-										<input
-											id="weight_kg"
-											name="weight_kg"
-											type="number"
-											step="0.01"
-											min={0.01}
-											inputMode="decimal"
-											value={form.weight_kg}
-											onChange={onChange}
-											className={`w-full p-2 rounded bg-gray-700 text-white ${
-												errors.weight_kg ? 'ring-2 ring-red-500' : ''
-											}`}
-											required
-										/>
-										{errors.weight_kg && <p className="text-red-400 text-sm mt-1">{errors.weight_kg}</p>}
-									</div>
-									<div>
-										<label htmlFor="height_cm" className="block mb-1">
-											Wzrost (cm)
-										</label>
-										<input
-											id="height_cm"
-											name="height_cm"
-											type="number"
-											step="0.01"
-											min={0.01}
-											inputMode="decimal"
-											value={form.height_cm}
-											onChange={onChange}
-											className={`w-full p-2 rounded bg-gray-700 text-white ${
-												errors.height_cm ? 'ring-2 ring-red-500' : ''
-											}`}
-											required
-										/>
-										{errors.height_cm && <p className="text-red-400 text-sm mt-1">{errors.height_cm}</p>}
-									</div>
-								</div>
-
 								<div className="flex items-center gap-3">
 									<button
 										type="submit"
@@ -262,6 +205,8 @@ export default function ProfilePage() {
 					</div>
 				</div>
 			</main>
+
+			<TrainingProfileCard />
 
 			<Footer />
 		</div>
