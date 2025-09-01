@@ -8,8 +8,6 @@ class ProfileIn(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
     birth_date: Optional[date] = None
-    height_cm: Optional[float] = Field(None, gt=0)  # <-- float
-    weight_kg: Optional[float] = Field(None, gt=0)  # <-- float
     gender: Optional[Literal["male", "female"]] = None
 
 class ProfileOut(ProfileIn):
