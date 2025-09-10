@@ -1,4 +1,3 @@
-// src/api/trainingProfile.ts
 import { api } from "./client";
 
 export type HRZones = {
@@ -17,7 +16,6 @@ export type TrainingProfile = {
   hr_zones: HRZones | null
 };
 
-// jeśli w BE masz /me/training-profile:
 const GET_MY_TRAINING = "/TrainingProfile/MyTrainingProfile";
 const PUT_MY_TRAINING = "/TrainingProfile/ChangeTrainingProfile";
 
