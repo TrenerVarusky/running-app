@@ -4,7 +4,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { slugify } from '../utils/PanelAdmin/slug.ts'
-import { TITLE_MAX, SUBTITLE_MAX, SLUG_MAX, ALLOWED_TYPES, MAX_BYTES } from '../utils/PanelAdmin/constants.ts'
+import {
+	TITLE_MAX,
+	SUBTITLE_MAX,
+	SLUG_MAX,
+	ALLOWED_TYPES,
+	MAX_BYTES,
+
+} from '../utils/PanelAdmin/constants.ts'
 import { useCreatePost } from '../hooks/useCreatePost.ts'
 
 type SectionDraft = { heading?: string; text: string }
@@ -144,7 +151,7 @@ export default function PanelAdmin() {
 			<Navbar />
 
 			<main className="flex-grow pt-24 py-12 px-4">
-				<div className="max-w-5xl mx-auto grid gap-8">
+				<div className="max-w-6xl mx-auto grid gap-8">
 					<div
 						className={`bg-gray-800 p-8 rounded-xl shadow-lg transform transition-all duration-700 ease-out will-change-[transform,opacity]
             ${showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
@@ -162,7 +169,7 @@ export default function PanelAdmin() {
 						</div>
 
 						<p className="text-white/70 text-sm mb-6">
-							Wymagane: tytuł, slug, ≥1 tag, ≥1 sekcja, hero (JPG/PNG/WebP &lt; 5MB).
+							<strong>Wymagane: tytuł, slug, tag 1 lub więcej, sekcja 1 lub więcej, hero img.</strong>
 						</p>
 
 						<form onSubmit={handleSubmit} className="space-y-6">
@@ -315,16 +322,61 @@ export default function PanelAdmin() {
 							</div>
 
 							{/* Obrazki */}
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+							<div className="grid grid-cols-1 md:grid-cols-1 gap-4">
 								<div>
 									<div className="flex items-baseline justify-between">
 										<label className="block mb-1">Hero image *</label>
-										<span className="text-xs text-white/60">JPG/PNG/WebP, max 5MB</span>
+										<span className="text-xs text-white/60">
+											JPG/PNG/WebP, max 5MB, dozwolone wymiary: 1920×1080 / 1280×720 / 2560×1440
+										</span>
 									</div>
 									<input
 										type="file"
 										accept="image/*"
-										onChange={e => setHero(e.target.files?.[0] || null)}
+										onChange={async e => {
+											const file = e.target.files?.[0] || null
+											if (!file) {
+												setHero(null)
+												return
+											}
+
+											// sprawdź typ/rozmiar
+											if (!ALLOWED_TYPES.includes(file.type as any)) {
+												setHero(null)
+												setError('Niedozwolony typ (JPG/PNG/WebP).')
+												return
+											}
+											if (file.size > MAX_BYTES) {
+												setHero(null)
+												setError('Plik jest zbyt duży (>5MB).')
+												return
+											}
+
+											// sprawdź wymiary
+											const url = URL.createObjectURL(file)
+											const img = new Image()
+											img.onload = () => {
+												const allowed = [
+													[1920, 1080],
+													[1280, 720],
+													[2560, 1440],
+												]
+												const ok = allowed.some(([w, h]) => w === img.naturalWidth && h === img.naturalHeight)
+
+												if (!ok) {
+													setHero(null)
+													setError(
+														`Nieprawidłowe wymiary: ${img.naturalWidth}×${img.naturalHeight}. 
+             Dozwolone: 1920×1080, 1280×720, 2560×1440`
+													)
+												} else {
+													setHero(file)
+													setError(null)
+												}
+												URL.revokeObjectURL(url)
+											}
+											img.src = url
+										}}
 										className="w-full p-2 rounded bg-gray-700 text-white"
 									/>
 									{hero && (
@@ -333,8 +385,9 @@ export default function PanelAdmin() {
 										</div>
 									)}
 									{imageError && <div className="text-xs text-red-300 mt-1">{imageError}</div>}
+									{error && <div className="text-xs text-red-300 mt-1">{error}</div>}
 								</div>
-								<div>
+								{/* <div>
 									<label className="block mb-1">Galeria</label>
 									<input
 										type="file"
@@ -346,7 +399,7 @@ export default function PanelAdmin() {
 									{gallery.length > 0 && (
 										<div className="mt-2 text-xs text-white/70">Wybrano {gallery.length} plików.</div>
 									)}
-								</div>
+								</div> */}
 							</div>
 
 							{/* Publikacja + akcje */}
