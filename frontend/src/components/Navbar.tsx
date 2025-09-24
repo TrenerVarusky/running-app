@@ -19,6 +19,14 @@ const Navbar = () => {
 		}
 	}, [menuOpen])
 
+	const hasAdminRole = (u?: any) => {
+		if (!u) return false;
+		if (typeof u.is_admin === "boolean") return u.is_admin;
+		if (typeof u.role === "string") return u.role.toLowerCase() === "admin";
+		if (Array.isArray(u.roles)) return u.roles.map(r => String(r).toLowerCase()).includes("admin");
+		return false;
+	};
+
 	return (
 		<nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 shadow-md bg-gray-900 text-white">
 			<h1 className="text-2xl font-bold tracking-wide">
@@ -39,6 +47,13 @@ const Navbar = () => {
 					</Link>
 				</li>
 				<li className="hover:text-blue-400 cursor-pointer transition">Kontakt</li>
+				{loggedIn && hasAdminRole(user) && (
+					<li>
+					<Link to="/panelAdmin" className="hover:text-blue-400 transition">
+						Panel admina
+					</Link>
+					</li>
+				)}
 				{loggedIn && (
 					<li>
 						<Link to="/userDetails" className="flex items-center gap-2 hover:text-blue-400">
@@ -92,6 +107,13 @@ const Navbar = () => {
 							</Link>
 						</li>
 						<li className="hover:text-blue-400">Kontakt</li>
+						{loggedIn && hasAdminRole(user) && (
+							<li>
+							<Link to="/panelAdmin" className="hover:text-blue-400 transition">
+								Panel admina
+							</Link>
+							</li>
+						)}
 						{loggedIn && (
 							<li>
 								<Link to="/userDetails" className="flex items-center gap-2 hover:text-blue-400">

@@ -7,9 +7,14 @@ import UserDetailsPage from './pages/UserDetailsPage'
 import PrivateRoute from './components/PrivateRoute'
 import { useEffect } from 'react'
 import { decodeToken, getToken, logout } from './utils/Auth'
+import PanelAdmin from './pages/PanelAdmin.tsx'
+import Forbidden from './components/Helpers/Forbidden.tsx'
+import AdminRoute from './components/Helpers/AdminRoute.tsx'
+import NotFound from './components/Helpers/NotFound.tsx'
+import PostPage from './pages/PostPage.tsx'
+import ScrollToTop from './components/Helpers/ScrollToTop.tsx'
 
 function App() {
-
 	useEffect(() => {
 		const token = getToken()
 		if (token) {
@@ -34,6 +39,7 @@ function App() {
 	}, [])
 	return (
 		<Router>
+			<ScrollToTop />
 			<Routes>
 				<Route path="/" element={<LandingPage />} />
 				<Route path="/login" element={<LoginPage />} />
@@ -41,6 +47,18 @@ function App() {
 				<Route path="/users" element={<UserListPage />} />
 
 				<Route path="/userDetails" element={<PrivateRoute element={<UserDetailsPage />} />} />
+
+				 {/* Panel Admin */}
+				<Route path="/PanelAdmin" element={<AdminRoute element={<PanelAdmin />} />} />
+
+				{/* Artykuły */}
+    			<Route path="/post/:slug" element={<PostPage />} />
+
+				{/* 403 */}
+				<Route path="/403" element={<Forbidden />} />
+
+				{/* 404 Not Found */}
+				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</Router>
 	)
