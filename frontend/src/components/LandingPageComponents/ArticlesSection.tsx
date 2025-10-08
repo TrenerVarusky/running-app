@@ -97,7 +97,7 @@ export default function ArticlesSection() {
             <div className="mt-12 text-center">
               <button
                 className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-full text-white font-semibold transition hover:scale-105 cursor-pointer"
-                onClick={() => nav("/posts")}
+                onClick={() => nav("/articlesAll")}
               >
                 Więcej artykułów
               </button>

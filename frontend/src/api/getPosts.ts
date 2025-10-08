@@ -82,3 +82,17 @@ export async function getPostBySlug(slug: string): Promise<PostDetail> {
     gallery_urls: (data.gallery_urls || []).map(u => abs(u)).filter(Boolean) as string[],
   };
 }
+
+export async function getArticlesAll(page = 1, pageSize = 20) {
+  const { data } = await api.get<LatestPost[]>("/Posts", { params: { page, page_size: pageSize }, });
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  return data.map(p => ({
+    ...p,
+    hero_image_url: p.hero_image_url
+      ? (p.hero_image_url.startsWith("http")
+          ? p.hero_image_url
+          : `${API_URL}${p.hero_image_url}`)
+      : null,
+  }));
+}

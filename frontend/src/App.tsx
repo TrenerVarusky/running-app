@@ -13,6 +13,7 @@ import AdminRoute from './components/Helpers/AdminRoute.tsx'
 import NotFound from './components/Helpers/NotFound.tsx'
 import PostPage from './pages/PostPage.tsx'
 import ScrollToTop from './components/Helpers/ScrollToTop.tsx'
+import ArticlesAll from './pages/ArticlesAll.tsx'
 
 function App() {
 	useEffect(() => {
@@ -45,6 +46,7 @@ function App() {
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/register" element={<RegisterPage />} />
 				<Route path="/users" element={<UserListPage />} />
+				<Route path="/articlesAll" element={<ArticlesAll />} />
 
 				<Route path="/userDetails" element={<PrivateRoute element={<UserDetailsPage />} />} />
 
