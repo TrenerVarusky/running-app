@@ -5,7 +5,7 @@ import BackButton from '../components/UI/BackButton'
 import PopupModal from '../components/UI/PopupModal'
 
 const registerUser = async (userData: { name: string; email: string; password: string; role: string }) => {
-	const res = await fetch('http://localhost:8000/auth/register', {
+	const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
