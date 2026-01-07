@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.schemas.user_schema import UserCreate, UserOut
 from app.models.user import User
 from db.connection import SessionLocal
-from core.security import hash_password
+from app.utils.auth import hash_password
 from core.auth import create_access_token
 from fastapi.responses import JSONResponse
 from app.schemas.auth import LoginUser
