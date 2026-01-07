@@ -6,7 +6,7 @@ type User = {
 }
 
 const fetchUsers = async (): Promise<User[]> => {
-	const res = await fetch('http://localhost:8000/Users')
+	const res = await fetch(`${import.meta.env.VITE_API_URL}/Users`)
 	if (!res.ok) throw new Error('Błąd podczas pobierania użytkowników')
 	return res.json()
 }

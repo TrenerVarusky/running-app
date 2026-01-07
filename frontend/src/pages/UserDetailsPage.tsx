@@ -4,7 +4,7 @@ import Footer from '../components/Footer'
 import { useProfile, useUpdateProfile } from '../hooks/useProfile'
 import { genderOptions, type Gender } from '../constants/profile'
 import TrainingProfileCard from '../components/TrainingProfile/TrainingProfileCard'
-
+import RunCalendar from '../components/CalendarSection/CalendarComponents'
 type FormState = {
 	first_name: string
 	last_name: string
@@ -207,6 +207,7 @@ export default function ProfilePage() {
 			</main>
 
 			<TrainingProfileCard />
+			<RunCalendar />
 
 			<Footer />
 		</div>
