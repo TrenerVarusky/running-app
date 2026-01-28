@@ -3,9 +3,7 @@ import os
 import urllib.parse
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import declarative_base, sessionmaker
-from dotenv import load_dotenv
-
-load_dotenv()
+from backend_v2.app.core.auth import load_dotenv
 
 DB_SERVER = os.getenv("DB_SERVER", "localhost")
 DB_PORT = os.getenv("DB_PORT", "5333")

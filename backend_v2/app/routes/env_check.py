@@ -1,8 +1,6 @@
 from fastapi import APIRouter
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
+from backend_v2.app.core.auth import load_dotenv
 
 router = APIRouter()
 
