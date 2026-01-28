@@ -1,6 +1,6 @@
 from sqlalchemy import Integer, String, Boolean, Text, DateTime, func, ForeignKey, LargeBinary
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.core.database import Base
+from backend_v2.app.core.database import Base
 from sqlalchemy.ext.hybrid import hybrid_property
 from typing import Optional, List
 from datetime import datetime

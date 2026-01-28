@@ -15,7 +15,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 for m in pkgutil.iter_modules(backend_v2.app.models.__path__):
-    importlib.import_module(f"app.models.{m.name}")
+    importlib.import_module(f"backend_v2.app.models.{m.name}")
 
 target_metadata = Base.metadata
 

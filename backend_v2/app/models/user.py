@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from app.core.database import Base
-from app.models.user_training_profile import UserTrainingProfile
+from backend_v2.app.core.database import Base
+from backend_v2.app.models.user_training_profile import UserTrainingProfile
 
 class User(Base):
     __tablename__ = "users"
