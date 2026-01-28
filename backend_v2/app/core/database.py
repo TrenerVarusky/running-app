@@ -9,7 +9,7 @@ load_dotenv()
 
 DB_SERVER = os.getenv("DB_SERVER", "localhost")
 DB_PORT = os.getenv("DB_PORT", "5333")
-DB_NAME = os.getenv("DB_NAME", "running_db")
+DB_NAME = os.getenv("DB_NAME", "runningdb")
 DB_USER = os.getenv("DB_USER", "sa")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "P@ssw0rd321")
 
