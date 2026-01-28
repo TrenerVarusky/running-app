@@ -2,9 +2,12 @@ from datetime import datetime, timedelta
 from jose import jwt, JWTError
 from dotenv import load_dotenv
 import os
+from pathlib import Path
 
-# Wczytaj zmienne z .env
-load_dotenv()
+BASE_DIR = Path(__file__).resolve().parents[2]
+ENV_PATH = BASE_DIR / ".env"
+
+load_dotenv(dotenv_path=ENV_PATH)
 
 # Bezpieczne pobranie SECRET_KEY
 SECRET_KEY = os.getenv("SECRET_KEY", "supersecretkey")
