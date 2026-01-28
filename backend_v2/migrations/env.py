@@ -6,15 +6,15 @@ import urllib.parse
 from alembic import context
 from sqlalchemy import create_engine, pool
 
-from app.core.database import Base, build_odbc_string, DB_NAME, ensure_database_exists
-import app.models
+from backend_v2.app.core.database import Base, build_odbc_string, DB_NAME, ensure_database_exists
+import backend_v2.app.models
 
 config = context.config
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-for m in pkgutil.iter_modules(app.models.__path__):
+for m in pkgutil.iter_modules(backend_v2.app.models.__path__):
     importlib.import_module(f"app.models.{m.name}")
 
 target_metadata = Base.metadata

@@ -1,12 +1,18 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from backend_v2.app.core.database import Base, engine, ensure_database_exists
+from backend_v2.app.core.migrations import run_migrations
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    ensure_database_exists()
-    Base.metadata.create_all(bind=engine)
-    yield
+    try:
+        ensure_database_exists()
+        run_migrations()
+        yield
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise
 
 app = FastAPI(
     title="API",
