@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from backend_v2.app.core.database import Base
-from backend_v2.app.models.user_training_profile import UserTrainingProfile
 
 class User(Base):
     __tablename__ = "users"
@@ -12,5 +11,16 @@ class User(Base):
     hashed_password = Column(String(255), nullable=False)
     role = Column(String, default="Użytkownik")
 
-    profile = relationship("UserTrainingProfile", uselist=False, back_populates="user")
-    training_profile = relationship(UserTrainingProfile, uselist=False, back_populates="user")
+    profile = relationship(
+        "UserProfile",
+        uselist=False,
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
+
+    training_profile = relationship(
+        "UserTrainingProfile",
+        uselist=False,
+        back_populates="user",
+        cascade="all, delete-orphan",
+    )
