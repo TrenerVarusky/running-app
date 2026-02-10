@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from backend_v2.app.core.database import Base, engine, ensure_database_exists
 from backend_v2.app.core.migrations import run_migrations
 from backend_v2.app.routes import users, env_check, auth, me_profile, training_profile, posts, admin_posts
+from backend_v2.app.core.exceptions import register_exception_handlers
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -24,6 +25,8 @@ app = FastAPI(
     openapi_url="/openapi.json",
     lifespan=lifespan
 )
+
+register_exception_handlers(app)
 
 app.include_router(env_check.router)
 app.include_router(auth.router)
