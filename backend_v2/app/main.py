@@ -4,6 +4,7 @@ from backend_v2.app.core.database import Base, engine, ensure_database_exists
 from backend_v2.app.core.migrations import run_migrations
 from backend_v2.app.routes import users, env_check, auth, me_profile, training_profile, posts, admin_posts
 from backend_v2.app.core.exceptions import register_exception_handlers
+from fastapi.middleware.cors import CORSMiddleware
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -24,6 +25,19 @@ app = FastAPI(
     redoc_url="/redoc",
     openapi_url="/openapi.json",
     lifespan=lifespan
+)
+
+origins = [
+    "http://localhost:3000",  # CRA
+    "http://localhost:5173",  # Vite
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 register_exception_handlers(app)
