@@ -2,16 +2,58 @@ version: "3.8"
 
 services:
   frontend:
+    container_name: running-app-frontend
+    image: frontend
+    ports:
+      - "5173:5173"  # trzeba do dockerfile dodac i do vite.config.js tez to w projektach jest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      - TZ=Europe/Warsaw
+      - CHOKIDAR_USEPOLLING=true
+      - VITE_APP_API_URL=${VITE_APP_API_URL:-http://running-app-backend:9000}
+    networks:
+      - apinet
+
+  backend:
+    container_name: running-app-backend
+    image: backend_v2
+    depends_on:
+      - db
     build:
       context: .
-      dockerfile: Dockerfile
-    container_name: frontend
+      dockerfile: ./backend_v2/Dockerfile
+    networks:
+        - apinet
     ports:
-      - "5173:5173"
-    env_file:
-      - .env
-    # environment:
-    #   VITE_API_URL: "http://localhost:8000"  // Do ustalenia 
+      - "9000:9000"
+    environment:
+      - TZ=Europe/Warsaw
+      - ConnectionStrings__Db=${ConnectionStrings__Db:-Server=db,1433;Database=runningdb;User Id=sa;Password=${DB_SA_PASSWORD:-P@ssw0rd321};TrustServerCertificate=True}
+      - FRONTEND_ORIGIN=${FRONTEND_ORIGIN:-http://localhost:5173}
+      - DB_SERVER=${DB_SERVER:-db}
+      - DB_PORT=${DB_PORT:-1433}
+      - DB_NAME=${DB_NAME:-runningdb}
+      - DB_USER=${DB_USER:-sa}
+      - DB_PASSWORD=${DB_PASSWORD:-${DB_SA_PASSWORD:-P@ssw0rd321}}
+
+  db:
+    container_name: running-app-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      MSSQL_SA_PASSWORD: ${DB_SA_PASSWORD:-P@ssw0rd321}
+      ACCEPT_EULA: "Y"
+      TZ: Europe/Warsaw
+    networks:
+      - apinet
+    ports:
+      - "5444:1433"
     volumes:
-      - .:/app
-      - /app/node_modules
+      - mssql-data:/var/opt/mssql
+
+networks:
+  apinet:
+
+volumes:
+  mssql-data:

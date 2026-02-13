@@ -17,7 +17,7 @@ Base = declarative_base()
 def build_odbc_string(database_name=None):
     db = database_name if database_name else ""
     return (
-        f"DRIVER={{ODBC Driver 17 for SQL Server}};"
+        f"DRIVER={{ODBC Driver 18 for SQL Server}};"
         f"SERVER={DB_SERVER},{DB_PORT};"
         f"DATABASE={db};"
         f"UID={DB_USER};"
